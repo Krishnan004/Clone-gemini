@@ -24,7 +24,24 @@ export const ContextProvider = (props) =>{
     },[])
 
     
-      
+    // useEffect(() => {
+    //   if (currentUser) {
+    //     const newChatEntry = { prompt: prevPrompt, result: result };
+    //     let updatedChat = [];
+    
+    //     if (recent && recent.length > 0) {
+    //       updatedChat = recent.map((chat, index) =>
+    //         index === id ? newChatEntry : chat
+    //       );
+    //     } else {
+    //       updatedChat = [newChatEntry];
+    //     }
+    
+    //     setRecent(updatedChat);
+    //     localStorage.setItem(currentUser.email, JSON.stringify(updatedChat));
+    //   }
+    // }, [result, currentUser, recent, id, prevPrompt]);
+    
     
 
     const initializeUser = (user)=>{
@@ -61,6 +78,10 @@ export const ContextProvider = (props) =>{
         setInput("")
         setResult((prev)=>[...prev,formattedResponse])
         setPrevPrompt((prev)=>[...prev,input])
+        const newChatEntry = { prompt: prevPrompt, result: result };
+        const updatedChat = recent.map((chat, index) =>  index === id ? newChatEntry : chat );
+        setRecent(updatedChat);
+        localStorage.setItem(currentUser.email, JSON.stringify(updatedChat));
         setShowResult(true)
         
     }
@@ -104,6 +125,7 @@ export const ContextProvider = (props) =>{
         setResult([])
         setPrevPrompt([])
         setInput("")
+        setId(recent.length)
       };
 
     const showrecent=(id)=>{
