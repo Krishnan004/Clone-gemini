@@ -78,8 +78,10 @@ export const ContextProvider = (props) =>{
         setInput("")
         setResult((prev)=>[...prev,formattedResponse])
         setPrevPrompt((prev)=>[...prev,input])
-        const newChatEntry = { prompt: prevPrompt, result: result };
-        const updatedChat = recent.map((chat, index) =>  index === id ? newChatEntry : chat );
+        const newChatEntry = { prompt: [...prevPrompt,input], result: [...result, formattedResponse] };
+        const updatedChat = recent.some((_, index) => index === id)
+          ? recent.map((chat, index) => index === id ? newChatEntry : chat)
+          : [...recent, newChatEntry];
         setRecent(updatedChat);
         localStorage.setItem(currentUser.email, JSON.stringify(updatedChat));
         setShowResult(true)
@@ -88,6 +90,7 @@ export const ContextProvider = (props) =>{
     
 
     const newChat = () => {
+      if(result){
       setShowResult(false);
   
       const newChatEntry = { prompt: prevPrompt, result: result };
@@ -95,7 +98,9 @@ export const ContextProvider = (props) =>{
   
       // Use functional update to ensure correct state
       setRecent((prevRecent) => {
-          const updatedRecent = [...prevRecent, newChatEntry];
+        const updatedRecent = prevRecent.some((_, index) => index === id)
+        ? prevRecent.map((chat, index) => index === id ? newChatEntry : chat)
+        : [...prevRecent, newChatEntry];
   
           // Save to localStorage after updating state
           localStorage.setItem(currentUser.email, JSON.stringify(updatedRecent));
@@ -109,6 +114,10 @@ export const ContextProvider = (props) =>{
       setInput("");
       setId(recent.length + 1); // Update id after the recent array length is updated
       console.log(id);
+    }
+    else{
+      console.log("Empty prompt")
+    }
   };
   
 

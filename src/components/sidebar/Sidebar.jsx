@@ -44,9 +44,9 @@ const Sidebar = () => {
                     <h4 className="text-md font-semibold text-gray-700">Recent</h4>
                     {recent.length>0?(
                         recent.map((data,index)=>(
-                    <div key={index} className="flex justify-between items-center hover:bg-gray-300 rounded-xl px-2 group/item " onClick={()=>{showrecent(index),setExistingId(index)}} >
+                    <div key={index} className="flex justify-between items-center  hover:bg-gray-300 rounded-xl px-2 group/item " onClick={()=>{showrecent(index),setExistingId(index)}} >
                         <p className="   text-gray-700 cursor-pointer">
-                            {data.prompt[0]}
+                            {data.prompt[0] || "Empty"}
                         </p>
                         <div className="relative group/edit hidden group-hover/item:block">
                             <SlOptions className=" hover:opacity-0" />
