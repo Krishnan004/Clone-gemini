@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import Sidebar from './components/sidebar/Sidebar';
 import SplitScreen from './components/design/SplitScreen';
 import Main from './components/main/Main';
-import Login from './components/Login/login';
+import Login from './components/login/Login';
 import { Context } from './context/Context';
 
 const App = () => {
