@@ -93,20 +93,20 @@ export const ContextProvider = (props) =>{
       if(result){
       setShowResult(false);
   
-      const newChatEntry = { prompt: prevPrompt, result: result };
-      console.log(newChatEntry);
+      // const newChatEntry = { prompt: prevPrompt, result: result };
+      // console.log(newChatEntry);
   
-      // Use functional update to ensure correct state
-      setRecent((prevRecent) => {
-        const updatedRecent = prevRecent.some((_, index) => index === id)
-        ? prevRecent.map((chat, index) => index === id ? newChatEntry : chat)
-        : [...prevRecent, newChatEntry];
+      // // Use functional update to ensure correct state
+      // setRecent((prevRecent) => {
+      //   const updatedRecent = prevRecent.some((_, index) => index === id)
+      //   ? prevRecent.map((chat, index) => index === id ? newChatEntry : chat)
+      //   : [...prevRecent, newChatEntry];
   
-          // Save to localStorage after updating state
-          localStorage.setItem(currentUser.email, JSON.stringify(updatedRecent));
+      //     // Save to localStorage after updating state
+      //     localStorage.setItem(currentUser.email, JSON.stringify(updatedRecent));
   
-          return updatedRecent; // Update the state
-      });
+      //     return updatedRecent; // Update the state
+      // });
   
       // Reset other states
       setResult([]);
@@ -151,10 +151,30 @@ export const ContextProvider = (props) =>{
     }
 
     const deletChat = (id) => {
-        const updatedChat = recent.filter((item, index) => index !== id);
-        localStorage.setItem(currentUser.email,JSON.stringify(updatedChat))
-        setRecent(updatedChat)
-    }
+      // Filter out the chat to be deleted
+      const updatedChat = recent.filter((item, index) => index !== id);
+    
+      // Update local storage with the new chat list
+      localStorage.setItem(currentUser.email, JSON.stringify(updatedChat));
+    
+      // Update state variables
+      setRecent(updatedChat);
+      setResult([]);
+      setPrevPrompt([]);
+    
+      // Start a new chat after deletion
+      setId(updatedChat.length); // Set id to the next chat position
+      setInput("");
+      setShowResult(false);
+    
+      if (updatedChat.length > 0) {
+        console.log("Deleted chat. Initiating a new chat...");
+      } else {
+        console.log("All chats deleted. Ready for a fresh start.");
+      }
+    };
+    
+  
 
     const contextValues = useMemo(
         () => ({

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef, useEffect } from 'react'
 import { Context } from '../../context/Context';
 import profile from "../../assets/profile.png"
 import logo from "../../assets/gemini_logo.png"
@@ -22,6 +22,14 @@ const Content = () => {
         currentUser
     } = useContext(Context)
 
+    const messagesEndRef = useRef(null)
+
+    useEffect(() => {
+        if (messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+
     const Loading = () =>{
         return(
             <div className="flex flex-col gap-2 p-6">
@@ -40,6 +48,8 @@ const Content = () => {
     return (
         <div className={`h-full flex flex-col py-4 sm:p-8 ${showResult ? null : "justify-center items-center"}`}>
             {showResult ? (
+                <div>
+                {
                 prevPrompt.map((prompt,i)=>(
                 <div key={i} className=" flex flex-col gap-4">
                     <div className="flex flex-col items-end gap-2">
@@ -50,11 +60,13 @@ const Content = () => {
                     <img src={logo} className="size-6 rounded-full" alt="" />
                     <p dangerouslySetInnerHTML={{__html:result[i]}} ></p>
                     </div>
-                    {loading&&
-                        <Loading/>
-                    }
                 </div>
-                ))
+                ))}
+                <div ref={messagesEndRef} />
+                {loading&&
+                    <Loading/>
+                }
+                </div>
             ) : (
                     <>
                     <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-300 to-red-700 text-transparent bg-clip-text">
