@@ -112,7 +112,7 @@ export const ContextProvider = (props) =>{
       setResult([]);
       setPrevPrompt([]);
       setInput("");
-      setId(recent.length + 1); // Update id after the recent array length is updated
+      setId(recent.length ); // Update id after the recent array length is updated
       console.log(id);
     }
     else{
